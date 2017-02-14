@@ -2,8 +2,8 @@ import math
 import copy
 
 #FISH_NAMES = ['Salmon','Bass','Trout','Catfish','Tuna','Shark','Eel','Flounder']
-GOAL_VAL = "Name"
-INDEX_VAL = "Fish Species"
+GOAL_VAL = "Fish Species"
+INDEX_VAL = "Name"
 def makeTreeID3(data, attributes, goalAttr):
 	vals = []
 	attrIndex = attributes.index(goalAttr)
@@ -37,11 +37,12 @@ def makeTreeID3(data, attributes, goalAttr):
 			newData = []
 			for d in data:
 				if d[bestIndex]==v:
-					newData.append(d)
+					newD = copy.deepcopy(d)
+					del newD[bestIndex]
+					newData.append(newD)
 			attrCopy = copy.deepcopy(attributes)
 			attributes.remove(best_attr)
-			for d in newData:
-				del d[bestIndex]
+			
 			newAttributes = copy.deepcopy(attributes)
 			newtree = makeTreeID3(newData, newAttributes, goalAttr)
 			tree[best_attr][v] = newtree
@@ -88,7 +89,7 @@ def getEntropy(data, attrIndex):
 	totalRows = len(data)
 	for c in counts.keys():
 		probability = float(counts[c])/float(totalRows)
-		entropy = entropy + -1*(probability)*math.log(probability,2)
+		entropy = entropy + (-1)*(probability)*math.log(probability,2)
 	return entropy
 
 def uniform(vals):
